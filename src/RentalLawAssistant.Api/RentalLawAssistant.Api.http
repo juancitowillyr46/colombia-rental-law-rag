@@ -1,0 +1,31 @@
+# Sample requests for the VS Code REST Client extension (or Visual Studio).
+# Start the API first: dotnet run --project src/RentalLawAssistant.Api
+
+@baseUrl = http://localhost:5047
+
+### Clear question
+POST {{baseUrl}}/ask
+Content-Type: application/json
+
+{ "question": "¿Quién arregla una gotera causada por lo viejo del techo?" }
+
+### Everyday words ("calentador")
+POST {{baseUrl}}/ask
+Content-Type: application/json
+
+{ "question": "Se dañó el calentador por viejo, ¿lo paga el inquilino o el propietario?" }
+
+### No basis: must be declined
+POST {{baseUrl}}/ask
+Content-Type: application/json
+
+{ "question": "¿Cuánto IVA se paga por arrendar un local comercial?" }
+
+### Invalid input: empty question -> 400
+POST {{baseUrl}}/ask
+Content-Type: application/json
+
+{ "question": "" }
+
+### Debug (Development only): retrieved articles and their similarity
+GET {{baseUrl}}/ask/debug?question=¿Puedo subarrendar una habitación?
