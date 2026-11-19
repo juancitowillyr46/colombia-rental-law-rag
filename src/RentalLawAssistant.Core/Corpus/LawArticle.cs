@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace RentalLawAssistant.Core.Corpus;
 
 /// <summary>
@@ -21,5 +23,6 @@ public sealed record LawArticle(
     string SourceUrl)
 {
     /// <summary>Id of the whole article ("l820-15"), the same for all its chunks. Citations point here.</summary>
+    [JsonIgnore]
     public string ArticleId => $"{LawId}-{ArticleNumber}";
 }
