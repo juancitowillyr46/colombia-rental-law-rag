@@ -483,3 +483,6 @@ $RECYCLE.BIN/
 
 # Generated vector index (stage 1)
 data/index/
+
+# Raw downloads from legal portals: contain copyrighted editorial notes. Traceability lives in data/corpus/SOURCES.md
+data/raw/
