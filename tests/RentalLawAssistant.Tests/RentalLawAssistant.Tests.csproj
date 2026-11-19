@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\RentalLawAssistant.Core\RentalLawAssistant.Core.csproj" />
     <ProjectReference Include="..\..\src\RentalLawAssistant.Api\RentalLawAssistant.Api.csproj" />
+    <ProjectReference Include="..\..\tools\RentalLawAssistant.Evals\RentalLawAssistant.Evals.csproj" />
   </ItemGroup>
 
   <ItemGroup>

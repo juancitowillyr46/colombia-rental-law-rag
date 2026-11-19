@@ -1,0 +1,137 @@
+[
+  {
+    "id": "q001",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Quién arregla una gotera causada por lo viejo del techo?",
+    "expected_article_ids": ["cc-1985", "cc-2028"],
+    "expected_answer": "El propietario, porque el deterioro viene de la vetustez del edificio y no es una reparación locativa.",
+    "should_answer": true
+  },
+  {
+    "id": "q002",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Se dañó el calentador por viejo, ¿lo paga el inquilino o el propietario?",
+    "expected_article_ids": ["cc-1985", "cc-2028"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q003",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Rompí un vidrio de la ventana, ¿quién lo tiene que pagar?",
+    "expected_article_ids": ["cc-2029", "cc-1998"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q004",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "La chapa de la puerta dejó de funcionar, ¿le toca al inquilino arreglarla?",
+    "expected_article_ids": ["cc-2029"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q005",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Qué se considera una reparación locativa?",
+    "expected_article_ids": ["cc-1998", "d1077-2.2.6.1.1.10"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q006",
+    "split": "tuning",
+    "category": "clear",
+    "question": "Hice una reparación urgente que le tocaba al dueño, ¿puedo descontarla del arriendo?",
+    "expected_article_ids": ["l820-27", "cc-1993"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q007",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "¿Cuánto me pueden subir el arriendo cada año?",
+    "expected_article_ids": ["l820-20"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q008",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿El arrendador me puede pedir un depósito en efectivo como garantía?",
+    "expected_article_ids": ["l820-16"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q009",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "¿Puedo subarrendar una habitación del apartamento que tengo en arriendo?",
+    "expected_article_ids": ["l820-17", "cc-2004"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q010",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "¿Con cuánto tiempo de anticipación tengo que avisar si quiero entregar el apartamento?",
+    "expected_article_ids": ["l820-24", "l820-25"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q011",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Qué obligaciones tiene el dueño de la vivienda que da en arriendo?",
+    "expected_article_ids": ["l820-8", "cc-1982"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q012",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Hay humedad en las paredes por un defecto de la construcción, ¿quién responde?",
+    "expected_article_ids": ["cc-2028", "cc-1985"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q013",
+    "split": "tuning",
+    "category": "repealed",
+    "question": "Si me atraso en el pago del arriendo, ¿el dueño puede terminar el contrato?",
+    "expected_article_ids": ["l820-22"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q014",
+    "split": "tuning",
+    "category": "out_of_corpus",
+    "question": "¿Cuánto IVA se paga por arrendar un local comercial?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "q015",
+    "split": "tuning",
+    "category": "out_of_corpus",
+    "question": "¿Cuál es la cuota de administración máxima que puede cobrar un conjunto residencial?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  }
+]
