@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Core must stay free of ASP.NET Core dependencies (see AGENTS.md). -->
+
+</Project>

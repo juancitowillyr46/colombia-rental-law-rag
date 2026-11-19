@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/RentalLawAssistant.Api/RentalLawAssistant.Api.csproj" />
+    <Project Path="src/RentalLawAssistant.Core/RentalLawAssistant.Core.csproj" />
+    <Project Path="src/RentalLawAssistant.Ingestion/RentalLawAssistant.Ingestion.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/RentalLawAssistant.Tests/RentalLawAssistant.Tests.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/RentalLawAssistant.Evals/RentalLawAssistant.Evals.csproj" />
+  </Folder>
+</Solution>

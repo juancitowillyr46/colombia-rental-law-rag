@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\RentalLawAssistant.Core\RentalLawAssistant.Core.csproj" />
+  </ItemGroup>
+
+</Project>
