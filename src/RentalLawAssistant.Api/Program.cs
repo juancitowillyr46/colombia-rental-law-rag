@@ -1,4 +1,8 @@
+using RentalLawAssistant.Core.Options;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRentalLawAssistantOptions(builder.Configuration);
+
 var app = builder.Build();
 
 // POST /ask is implemented in phase 2.

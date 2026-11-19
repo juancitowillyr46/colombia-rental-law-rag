@@ -73,3 +73,9 @@ dotnet_naming_symbols.async_methods.applicable_kinds = method
 dotnet_naming_symbols.async_methods.required_modifiers = async
 dotnet_naming_style.end_in_async.required_suffix = Async
 dotnet_naming_style.end_in_async.capitalization = pascal_case
+
+# Analyzer tuning
+# CA1848: LoggerMessage delegates are a hot-path optimization; plain structured logging is enough here.
+dotnet_diagnostic.CA1848.severity = suggestion
+# CA1873: same family as CA1848 (guarding log argument evaluation).
+dotnet_diagnostic.CA1873.severity = suggestion
