@@ -27,5 +27,7 @@ Content-Type: application/json
 
 { "question": "" }
 
+### Interactive API docs (Development only): open http://localhost:5047/scalar in the browser
+
 ### Debug (Development only): retrieved articles and their similarity
 GET {{baseUrl}}/ask/debug?question=¿Puedo subarrendar una habitación?

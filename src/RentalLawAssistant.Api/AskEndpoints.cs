@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using RentalLawAssistant.Api.Contracts;
 using RentalLawAssistant.Core.Answering;
@@ -15,18 +16,33 @@ public static class AskEndpoints
     public static WebApplication MapAskEndpoints(this WebApplication app)
     {
         ArgumentNullException.ThrowIfNull(app);
-        app.MapPost("/ask", AskAsync);
+
+        app.MapPost("/ask", AskAsync)
+            .WithName("Ask")
+            .WithTags("Ask")
+            .WithSummary("Answer a residential rental law question")
+            .WithDescription(
+                "Retrieves the closest in-force articles, asks the chat model for a short answer in Spanish and keeps only " +
+                "citations that were retrieved. Citation texts always come from the corpus. When there is no basis, " +
+                "returns 200 with grounded = false and no citations.")
+            .ProducesProblem(StatusCodes.Status400BadRequest);
 
         // Shows the retrieved articles and their similarity; useful to debug and to record the demo.
         if (app.Environment.IsDevelopment())
         {
-            app.MapGet("/ask/debug", DebugAsync);
+            app.MapGet("/ask/debug", DebugAsync)
+                .WithName("AskDebug")
+                .WithTags("Debug")
+                .WithSummary("Show what retrieval found (Development only)")
+                .WithDescription("Returns the top articles with their cosine similarity and whether they clear MinSimilarity. Does not call the chat model.")
+                .ProducesProblem(StatusCodes.Status400BadRequest);
         }
 
         return app;
     }
 
-    private static async Task<IResult> AskAsync(AskRequest request, AskService askService, CancellationToken cancellationToken)
+    private static async Task<Results<Ok<AskResponse>, ProblemHttpResult>> AskAsync(
+        AskRequest request, AskService askService, CancellationToken cancellationToken)
     {
         if (ValidateQuestion(request.Question) is { } error)
         {
@@ -34,10 +50,10 @@ public static class AskEndpoints
         }
 
         var result = await askService.AskAsync(request.Question!.Trim(), cancellationToken);
-        return Results.Ok(AskResponse.From(result));
+        return TypedResults.Ok(AskResponse.From(result));
     }
 
-    private static async Task<IResult> DebugAsync(
+    private static async Task<Results<Ok<DebugResponse>, ProblemHttpResult>> DebugAsync(
         string? question, Retriever retriever, IOptions<RetrievalOptions> options, CancellationToken cancellationToken)
     {
         if (ValidateQuestion(question) is { } error)
@@ -46,7 +62,7 @@ public static class AskEndpoints
         }
 
         var retrieval = await retriever.RetrieveAsync(question!.Trim(), cancellationToken);
-        return Results.Ok(new DebugResponse(
+        return TypedResults.Ok(new DebugResponse(
             question.Trim(),
             retrieval.TopSimilarity,
             options.Value.MinSimilarity,
@@ -55,15 +71,15 @@ public static class AskEndpoints
                 a.Article.Id, a.Article.ArticleId, a.Article.LawName, a.Article.ArticleNumber, a.Similarity))]));
     }
 
-    private static IResult? ValidateQuestion(string? question)
+    private static ProblemHttpResult? ValidateQuestion(string? question)
     {
         if (string.IsNullOrWhiteSpace(question))
         {
-            return Results.Problem(SpanishMessages.QuestionRequired, statusCode: StatusCodes.Status400BadRequest);
+            return TypedResults.Problem(SpanishMessages.QuestionRequired, statusCode: StatusCodes.Status400BadRequest);
         }
 
         return question.Trim().Length > MaxQuestionLength
-            ? Results.Problem(SpanishMessages.QuestionTooLong(MaxQuestionLength), statusCode: StatusCodes.Status400BadRequest)
+            ? TypedResults.Problem(SpanishMessages.QuestionTooLong(MaxQuestionLength), statusCode: StatusCodes.Status400BadRequest)
             : null;
     }
 }

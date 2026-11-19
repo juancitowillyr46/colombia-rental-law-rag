@@ -5,6 +5,7 @@ using RentalLawAssistant.Api;
 using RentalLawAssistant.Core;
 using RentalLawAssistant.Core.Indexing;
 using RentalLawAssistant.Core.Options;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,15 @@ builder.Services.AddSingleton<IChatClient>(services =>
 });
 builder.Services.AddRentalLawAssistant();
 builder.Services.AddProblemDetails();
+builder.Services.AddOpenApi(options => options.AddDocumentTransformer((document, _, _) =>
+{
+    document.Info.Title = "Colombia Rental Law RAG";
+    document.Info.Version = "v1";
+    document.Info.Description =
+        "Answers Colombian residential rental law questions using only official legal texts, always citing the article. " +
+        "Runs locally with Ollama. General information, not legal advice.";
+    return Task.CompletedTask;
+}));
 
 var app = builder.Build();
 
@@ -35,6 +45,17 @@ app.UseExceptionHandler(new ExceptionHandlerOptions
         ? badRequest.StatusCode
         : StatusCodes.Status500InternalServerError,
 });
+
+if (app.Environment.IsDevelopment())
+{
+    // OpenAPI document at /openapi/v1.json and interactive docs at /scalar.
+    app.MapOpenApi();
+    app.MapScalarApiReference(options => options
+        .WithTitle("Colombia Rental Law RAG")
+        .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient));
+    app.MapGet("/", () => Results.Redirect("/scalar")).ExcludeFromDescription();
+}
+
 app.MapAskEndpoints();
 
 app.Run();

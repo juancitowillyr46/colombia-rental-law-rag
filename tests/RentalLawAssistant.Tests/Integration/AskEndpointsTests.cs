@@ -135,6 +135,35 @@ public sealed class AskEndpointsTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task OpenApiDocumentDescribesTheAskEndpointInDevelopment()
+    {
+        using var factory = CreateFactory(new FakeChatClient("unused"), environment: "Development");
+        using var client = factory.CreateClient();
+
+        using var json = JsonDocument.Parse(await client.GetStringAsync("/openapi/v1.json"));
+
+        var root = json.RootElement;
+        Assert.Equal("Colombia Rental Law RAG", root.GetProperty("info").GetProperty("title").GetString());
+        var ask = root.GetProperty("paths").GetProperty("/ask").GetProperty("post");
+        Assert.True(ask.GetProperty("responses").TryGetProperty("200", out _));
+        Assert.True(ask.GetProperty("responses").TryGetProperty("400", out _));
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync("/scalar")).StatusCode);
+    }
+
+    [Theory]
+    [InlineData("/openapi/v1.json")]
+    [InlineData("/scalar")]
+    public async Task ApiDocsAreNotPublishedOutsideDevelopment(string path)
+    {
+        using var factory = CreateFactory(new FakeChatClient("unused"), environment: "Production");
+        using var client = factory.CreateClient();
+
+        using var response = await client.GetAsync(path);
+
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [Fact]
     public async Task ApiDoesNotStartWhenTheIndexWasBuiltWithAnotherModel()
     {
         await IndexFile.WriteAsync(_indexPath, TestCorpus.Index with { EmbeddingModel = "nomic-embed-text" });
