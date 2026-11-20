@@ -167,7 +167,7 @@ Fecha de corte: **19 de noviembre de 2026**. Fuentes, fechas de descarga y crite
 - [x] **Etapa 1, fase 1 – Recuperación:** corpus, ingesta con reutilización de embeddings, búsqueda en memoria, umbral.
 - [x] **Fase 2 – Respuestas:** salida estructurada, validación de citas, `POST /ask`, OpenAPI y Scalar.
 - [x] **Fase 3 – Evaluaciones:** 60 preguntas, calibración del umbral, comparación de modelos, medición final.
-- [ ] **Fase 4 – Portafolio:** CI y README con capturas de la demo listos; falta la release `v0.1.0`.
+- [x] **Fase 4 – Portafolio:** CI, README con capturas de la demo y release [`v0.1.0`](https://github.com/juancitowillyr46/colombia-rental-law-rag/releases/tag/v0.1.0).
 - [ ] **Etapa 2, fase 5 – PostgreSQL + pgvector:** índice HNSW, ingesta idempotente y **búsqueda híbrida** (vectores + texto completo en español) como `PostgresArticleStore` de la misma interfaz. Se queda solo si mejora las evaluaciones frente a la `v0.1.0`.
 - [ ] **Mejoras medidas por las evaluaciones:** fidelidad con un LLM como juez; un filtro de alcance para preguntas parecidas a un tema del corpus pero fuera de él (crédito hipotecario, registro de empresas).
 - [ ] **Fase 6 – Integración:** un bot de WhatsApp de incidentes para inmobiliarias llama a `/ask` para sugerir quién paga cada daño.
