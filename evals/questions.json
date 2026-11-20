@@ -133,5 +133,185 @@
     "expected_article_ids": [],
     "expected_answer": "",
     "should_answer": false
+  },
+  {
+    "id": "t001",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "Se tapó el lavamanos por pelo y jabón, ¿eso lo arreglo yo o el dueño?",
+    "expected_article_ids": ["cc-2030", "cc-1998", "l820-9"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t002",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "El dueño no me quiere recibir la plata del arriendo, ¿qué puedo hacer?",
+    "expected_article_ids": ["l820-10"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t003",
+    "split": "test",
+    "category": "clear",
+    "question": "¿El contrato de arrendamiento de vivienda tiene que ser por escrito?",
+    "expected_article_ids": ["l820-3"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t004",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "Arrendé sin decir por cuánto tiempo, ¿cuánto dura el contrato?",
+    "expected_article_ids": ["l820-5"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t005",
+    "split": "test",
+    "category": "clear",
+    "question": "¿El contrato de arriendo se renueva solo cuando se vence?",
+    "expected_article_ids": ["l820-6"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t006",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "El propietario no me quiere dar recibo de lo que le pago, ¿está obligado?",
+    "expected_article_ids": ["l820-11"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t007",
+    "split": "test",
+    "category": "clear",
+    "question": "¿Cuál es el valor máximo que me pueden cobrar de arriendo al mes?",
+    "expected_article_ids": ["l820-18"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t008",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "Somos dos inquilinos en el contrato y mi compañero no pagó, ¿me pueden cobrar todo a mí?",
+    "expected_article_ids": ["l820-7"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t009",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "Se soltó la bisagra de la puerta del baño, ¿me toca arreglarla?",
+    "expected_article_ids": ["cc-2029"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t010",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "El dueño está haciendo una obra y no puedo usar la mitad de la casa, ¿me deben bajar el arriendo?",
+    "expected_article_ids": ["cc-1986"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t011",
+    "split": "test",
+    "category": "clear",
+    "question": "Si hice mejoras al apartamento sin permiso del dueño, ¿me tiene que devolver la plata?",
+    "expected_article_ids": ["cc-1994"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t012",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "Me voy a ir del apartamento, ¿cómo lo tengo que entregar?",
+    "expected_article_ids": ["cc-2006", "cc-2005"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t013",
+    "split": "test",
+    "category": "clear",
+    "question": "¿Puedo usar la casa que arriendo para un negocio aunque el contrato dice vivienda?",
+    "expected_article_ids": ["cc-1996"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t014",
+    "split": "test",
+    "category": "everyday_words",
+    "question": "Mi primo que se quedó en mi casa rompió una ventana, ¿respondo yo?",
+    "expected_article_ids": ["cc-1999", "cc-2029"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "t015",
+    "split": "test",
+    "category": "repealed",
+    "question": "¿Qué medidas cautelares puede pedir el dueño en un proceso de restitución del inmueble?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "t016",
+    "split": "test",
+    "category": "repealed",
+    "question": "¿Las sentencias de restitución de inmueble arrendado se envían a consulta?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "t017",
+    "split": "test",
+    "category": "out_of_corpus",
+    "question": "¿Cómo se calcula la retención en la fuente sobre los cánones de arrendamiento?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "t018",
+    "split": "test",
+    "category": "out_of_corpus",
+    "question": "¿Qué requisitos pide un banco para darme un crédito hipotecario?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "t019",
+    "split": "test",
+    "category": "out_of_corpus",
+    "question": "¿Cuánto cobra un abogado por un proceso de restitución?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "t020",
+    "split": "test",
+    "category": "out_of_corpus",
+    "question": "¿Se pueden tener mascotas en un conjunto residencial?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
   }
 ]
