@@ -13,12 +13,12 @@ builder.Services.AddRentalLawAssistantOptions(builder.Configuration);
 builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(services =>
 {
     var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-    return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.EmbeddingModel);
+    return new OllamaApiClient(ollama.CreateHttpClient(), ollama.EmbeddingModel);
 });
 builder.Services.AddSingleton<IChatClient>(services =>
 {
     var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-    return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.ChatModel);
+    return new OllamaApiClient(ollama.CreateHttpClient(), ollama.ChatModel);
 });
 builder.Services.AddRentalLawAssistant();
 builder.Services.AddProblemDetails();

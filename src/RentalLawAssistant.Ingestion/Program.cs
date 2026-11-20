@@ -22,7 +22,7 @@ builder.Services.AddSingleton(_ => new CorpusParser());
 builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(services =>
 {
     var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-    return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.EmbeddingModel);
+    return new OllamaApiClient(ollama.CreateHttpClient(), ollama.EmbeddingModel);
 });
 builder.Services.AddSingleton<Ingestor>();
 

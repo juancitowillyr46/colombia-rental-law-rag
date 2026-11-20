@@ -33,12 +33,12 @@ builder.Services.AddRentalLawAssistantOptions(builder.Configuration);
 builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(services =>
 {
     var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-    return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.EmbeddingModel);
+    return new OllamaApiClient(ollama.CreateHttpClient(), ollama.EmbeddingModel);
 });
 builder.Services.AddSingleton<IChatClient>(services =>
 {
     var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-    return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.ChatModel);
+    return new OllamaApiClient(ollama.CreateHttpClient(), ollama.ChatModel);
 });
 builder.Services.AddRentalLawAssistant();
 
@@ -64,6 +64,14 @@ try
         includeTest ? ", including the test split" : ", tuning split only",
         ollama.EmbeddingModel,
         retrievalOnly ? string.Empty : $" and chat model {ollama.ChatModel}");
+
+    // Warm-up: load the models into memory first, so the first question's latency is not the load time.
+    await retriever.RetrieveAsync("calentamiento");
+    if (!retrievalOnly)
+    {
+        logger.LogInformation("Loading chat model {ChatModel}...", ollama.ChatModel);
+        await host.Services.GetRequiredService<IChatClient>().GetResponseAsync("Responde solo: ok");
+    }
 
     var results = new List<QuestionResult>();
     foreach (var question in questions)
