@@ -135,6 +135,231 @@
     "should_answer": false
   },
   {
+    "id": "q016",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Se partió una baldosa del piso del baño, ¿la tengo que cambiar yo?",
+    "expected_article_ids": ["cc-2029", "cc-1998"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q017",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Se rompió una tubería dentro de la pared por lo vieja, ¿quién la paga?",
+    "expected_article_ids": ["cc-1985", "cc-2028"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q018",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Cuando entregue el apartamento, ¿me toca pintarlo?",
+    "expected_article_ids": ["cc-2028", "l820-9"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q019",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Qué obligaciones tiene el arrendatario según la Ley 820?",
+    "expected_article_ids": ["l820-9"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q020",
+    "split": "tuning",
+    "category": "clear",
+    "question": "Si la vivienda está en tan mal estado que no se puede habitar, ¿puedo terminar el contrato?",
+    "expected_article_ids": ["cc-1990", "l820-24"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q021",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Le avisé al dueño de un daño urgente, no hizo nada y lo arreglé yo, ¿me tiene que pagar?",
+    "expected_article_ids": ["cc-1993", "l820-27"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q022",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿El dueño puede terminar el contrato porque necesita la casa para vivir él?",
+    "expected_article_ids": ["l820-22", "cc-2025"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q023",
+    "split": "tuning",
+    "category": "clear",
+    "question": "Si el dueño vende la casa, ¿el nuevo dueño tiene que respetar mi contrato?",
+    "expected_article_ids": ["cc-2020", "cc-2019"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q024",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Me fui antes de que se acabara el contrato, ¿tengo que pagar los meses que faltan?",
+    "expected_article_ids": ["cc-2013", "cc-2003", "l820-25"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q025",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Arrendé un apartamento amoblado, ¿por cuánto tiempo se arriendan los muebles?",
+    "expected_article_ids": ["cc-2032"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q026",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Con cuánta anticipación debe avisar el arrendador para terminar el contrato?",
+    "expected_article_ids": ["l820-23", "l820-22"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q027",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "No pagué el agua y la luz y me las cortaron, ¿el dueño puede terminar el contrato?",
+    "expected_article_ids": ["l820-22", "l820-15"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q028",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Qué reglas aplican a quienes viven en una pensión o vivienda compartida?",
+    "expected_article_ids": ["l820-13"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q029",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Se puede fijar el valor del arriendo en dólares?",
+    "expected_article_ids": ["l820-19"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q030",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Las inmobiliarias necesitan algún registro para arrendar viviendas?",
+    "expected_article_ids": ["l820-28"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q031",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "El dueño entra al apartamento sin permiso y me molesta, ¿tengo derecho a una indemnización?",
+    "expected_article_ids": ["cc-1987", "l820-8"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q032",
+    "split": "tuning",
+    "category": "clear",
+    "question": "¿Qué cuidado debe tener el arrendatario con la vivienda?",
+    "expected_article_ids": ["cc-1997", "l820-9"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q033",
+    "split": "tuning",
+    "category": "everyday_words",
+    "question": "Se cae el taco de la luz por una falla de la instalación eléctrica vieja, ¿quién la arregla?",
+    "expected_article_ids": ["cc-1985", "cc-2028", "d1077-2.2.6.1.1.10"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q034",
+    "split": "tuning",
+    "category": "repealed",
+    "question": "¿Qué pasa si me atraso un periodo entero en el pago de la renta según el Código Civil?",
+    "expected_article_ids": ["l820-22"],
+    "expected_answer": "",
+    "should_answer": true
+  },
+  {
+    "id": "q035",
+    "split": "tuning",
+    "category": "repealed",
+    "question": "¿Se puede pedir una inspección judicial del inmueble antes de notificar la demanda de restitución?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "q036",
+    "split": "tuning",
+    "category": "repealed",
+    "question": "¿Cómo se determina la cuantía de los procesos de tenencia por arrendamiento?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "q037",
+    "split": "tuning",
+    "category": "out_of_corpus",
+    "question": "¿Cuánto es el impuesto predial de una casa en Bogotá?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "q038",
+    "split": "tuning",
+    "category": "out_of_corpus",
+    "question": "¿Cómo registro una empresa en la Cámara de Comercio?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "q039",
+    "split": "tuning",
+    "category": "out_of_corpus",
+    "question": "¿Qué dice la ley sobre el arriendo de una finca para cultivar?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
+    "id": "q040",
+    "split": "tuning",
+    "category": "out_of_corpus",
+    "question": "¿Cuál es el salario mínimo en Colombia?",
+    "expected_article_ids": [],
+    "expected_answer": "",
+    "should_answer": false
+  },
+  {
     "id": "t001",
     "split": "test",
     "category": "everyday_words",
