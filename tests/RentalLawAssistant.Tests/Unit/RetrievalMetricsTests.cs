@@ -1,3 +1,4 @@
+using RentalLawAssistant.Core.Answering;
 using RentalLawAssistant.Core.Corpus;
 using RentalLawAssistant.Core.Retrieval;
 using RentalLawAssistant.Evals;
@@ -61,6 +62,42 @@ public sealed class RetrievalMetricsTests
     }
 
     [Fact]
+    public void FullModeScoresTheFinalAnswer()
+    {
+        var right = Result(["a-1"], shouldAnswer: true, hasBasis: true, retrieved: ["a-1"]) with { Ask = Answer(grounded: true, "a-1", "a-2") };
+        var wrongRefusal = Result(["a-1"], shouldAnswer: true, hasBasis: true, retrieved: ["a-1"]) with { Ask = Answer(grounded: false) };
+        var rightRefusal = Result([], shouldAnswer: false, hasBasis: true, retrieved: ["a-3"]) with { Ask = Answer(grounded: false) };
+
+        var metrics = RetrievalMetrics.From([right, wrongRefusal, rightRefusal]);
+
+        Assert.Equal(0.5, right.CitationPrecision);
+        Assert.False(right.Failed);
+        Assert.True(wrongRefusal.Failed);
+        Assert.False(rightRefusal.Failed);
+        Assert.Equal(2.0 / 3, metrics.AnswerDecisionAccuracy!.Value, precision: 6);
+        Assert.Equal(0.5, metrics.CitationPrecision);
+        Assert.Equal(1, metrics.DiscardedCitations);
+    }
+
+    [Fact]
+    public void ThresholdSweepCountsFalseRejectsAndFalseAccepts()
+    {
+        QuestionResult[] results =
+        [
+            Result(["a-1"], shouldAnswer: true, hasBasis: true, retrieved: ["a-1"], topSimilarity: 0.48f),
+            Result(["a-2"], shouldAnswer: true, hasBasis: true, retrieved: ["a-2"], topSimilarity: 0.70f),
+            Result([], shouldAnswer: false, hasBasis: true, retrieved: ["a-3"], topSimilarity: 0.59f),
+        ];
+
+        var points = ThresholdPoint.Sweep(results, from: 0.45f, to: 0.60f, step: 0.05f);
+
+        Assert.Equal([0.45f, 0.50f, 0.55f, 0.60f], points.Select(p => p.Threshold));
+        Assert.Equal((0, 1), (points[0].FalseRejects, points[0].FalseAccepts));
+        Assert.Equal((1, 1), (points[1].FalseRejects, points[1].FalseAccepts));
+        Assert.Equal((1, 0), (points[3].FalseRejects, points[3].FalseAccepts));
+    }
+
+    [Fact]
     public void RealQuestionsFileIsValid()
     {
         var path = Path.Combine(FindRepositoryRoot(), "evals", "questions.json");
@@ -89,6 +126,15 @@ public sealed class RetrievalMetricsTests
             File.Delete(path);
         }
     }
+
+    private static AskResult Answer(bool grounded, params string[] citedIds) =>
+        new(
+            "Respuesta.",
+            grounded,
+            [.. citedIds.Select(id => new Citation(id, "Ley", id.Split('-')[1], "Texto.", "https://example.org"))],
+            "Aviso.",
+            new DateOnly(2026, 11, 19),
+            DiscardedCitations: grounded ? 1 : 0);
 
     private static QuestionResult Result(
         string[] expected, bool shouldAnswer, bool hasBasis, string[] retrieved, float topSimilarity = 0.7f)

@@ -5,20 +5,26 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OllamaSharp;
-using RentalLawAssistant.Core.Indexing;
+using RentalLawAssistant.Core;
+using RentalLawAssistant.Core.Answering;
 using RentalLawAssistant.Core.Options;
 using RentalLawAssistant.Core.Retrieval;
 using RentalLawAssistant.Evals;
 
-// Evals console: runs evals/questions.json and writes evals/results/latest.md.
-// Usage: dotnet run --project tools/RentalLawAssistant.Evals -- --retrieval-only
+// Evals console: runs evals/questions.json and writes a Markdown report.
+//   dotnet run --project tools/RentalLawAssistant.Evals -- --retrieval-only    retrieval metrics, no chat model
+//   dotnet run --project tools/RentalLawAssistant.Evals                        full pipeline (retrieval + answer + validation)
+//   add --final to also run the held-out test split (only once, at the end)
+//   add --Ollama:ChatModel=<model> or --Retrieval:MinSimilarity=<value> to compare settings
 const string QuestionsPath = "evals/questions.json";
-const string ReportPath = "evals/results/latest.md";
+const string RetrievalOnlyFlag = "--retrieval-only";
+const string FinalFlag = "--final";
 
-var retrievalOnly = args.Contains("--retrieval-only", StringComparer.Ordinal);
+var retrievalOnly = args.Contains(RetrievalOnlyFlag, StringComparer.Ordinal);
+var includeTest = args.Contains(FinalFlag, StringComparer.Ordinal);
 var builder = Host.CreateApplicationBuilder(new HostApplicationBuilderSettings
 {
-    Args = [.. args.Where(a => a != "--retrieval-only")],
+    Args = [.. args.Where(a => a is not (RetrievalOnlyFlag or FinalFlag))],
     // Read appsettings.json from the build output, so the app works from any working directory.
     ContentRootPath = AppContext.BaseDirectory,
 });
@@ -29,6 +35,12 @@ builder.Services.AddSingleton<IEmbeddingGenerator<string, Embedding<float>>>(ser
     var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
     return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.EmbeddingModel);
 });
+builder.Services.AddSingleton<IChatClient>(services =>
+{
+    var ollama = services.GetRequiredService<IOptions<OllamaOptions>>().Value;
+    return new OllamaApiClient(new Uri(ollama.Endpoint), ollama.ChatModel);
+});
+builder.Services.AddRentalLawAssistant();
 
 using var host = builder.Build();
 await host.StartAsync();
@@ -36,32 +48,51 @@ await host.StartAsync();
 var logger = host.Services.GetRequiredService<ILogger<Program>>();
 try
 {
-    if (!retrievalOnly)
-    {
-        logger.LogError("Only --retrieval-only is available for now; the full mode arrives with answer generation (phase 2).");
-        return 1;
-    }
-
     var ollama = host.Services.GetRequiredService<IOptions<OllamaOptions>>().Value;
-    var corpus = host.Services.GetRequiredService<IOptions<CorpusOptions>>().Value;
-    var retrievalOptions = host.Services.GetRequiredService<IOptions<RetrievalOptions>>();
-    var store = await InMemoryArticleStore.LoadAsync(RepositoryPaths.Resolve(corpus.IndexPath), ollama.EmbeddingModel);
-    var retriever = new Retriever(host.Services.GetRequiredService<IEmbeddingGenerator<string, Embedding<float>>>(), store, retrievalOptions);
+    var retrievalOptions = host.Services.GetRequiredService<IOptions<RetrievalOptions>>().Value;
+    var retriever = host.Services.GetRequiredService<Retriever>();
+    var askService = host.Services.GetRequiredService<AskService>();
 
-    var questions = EvalQuestion.Load(RepositoryPaths.Resolve(QuestionsPath));
-    logger.LogInformation("Running {Count} questions against {Fragments} indexed fragments ({Model})", questions.Count, store.Count, store.EmbeddingModel);
+    // The test split is held out: it only runs with --final, once, after tuning is done.
+    var questions = EvalQuestion.Load(RepositoryPaths.Resolve(QuestionsPath))
+        .Where(q => includeTest || q.Split == EvalQuestion.TuningSplit)
+        .ToList();
+    logger.LogInformation(
+        "Running {Count} questions ({Mode}{Final}) with embedding model {EmbeddingModel}{ChatModel}",
+        questions.Count,
+        retrievalOnly ? "retrieval only" : "full",
+        includeTest ? ", including the test split" : ", tuning split only",
+        ollama.EmbeddingModel,
+        retrievalOnly ? string.Empty : $" and chat model {ollama.ChatModel}");
 
     var results = new List<QuestionResult>();
     foreach (var question in questions)
     {
-        var stopwatch = Stopwatch.StartNew();
         var retrieval = await retriever.RetrieveAsync(question.Question);
-        results.Add(new QuestionResult(question, retrieval, stopwatch.Elapsed));
+        var stopwatch = Stopwatch.StartNew();
+        var ask = retrievalOnly ? null : await askService.AskAsync(question.Question);
+        var latency = retrievalOnly ? TimeSpan.Zero : stopwatch.Elapsed;
+        if (retrievalOnly)
+        {
+            // Retrieval-only latency: time a second retrieval so the model warm-up does not dominate.
+            stopwatch.Restart();
+            await retriever.RetrieveAsync(question.Question);
+            latency = stopwatch.Elapsed;
+        }
+
+        results.Add(new QuestionResult(question, retrieval, latency, ask));
+        logger.LogInformation("{Id}: {Outcome} ({Seconds:F1} s)", question.Id, results[^1].Failed ? "FAIL" : "ok", latency.TotalSeconds);
     }
 
-    var report = MarkdownReport.Build(
-        results, store.EmbeddingModel, retrievalOptions.Value.TopK, retrievalOptions.Value.MinSimilarity, DateTimeOffset.UtcNow);
-    var reportPath = RepositoryPaths.Resolve(ReportPath);
+    var settings = new ReportSettings(
+        ollama.EmbeddingModel,
+        retrievalOnly ? null : ollama.ChatModel,
+        retrievalOptions.TopK,
+        retrievalOptions.MinSimilarity,
+        includeTest,
+        DateTimeOffset.UtcNow);
+    var report = MarkdownReport.Build(results, settings);
+    var reportPath = RepositoryPaths.Resolve(ReportFileName(settings));
     Directory.CreateDirectory(Path.GetDirectoryName(reportPath)!);
     await File.WriteAllTextAsync(reportPath, report);
 
@@ -83,4 +114,18 @@ catch (HttpRequestException exception)
 finally
 {
     await host.StopAsync();
+}
+
+// latest.md is the retrieval-only tuning run; full and final runs get their own files so they can be compared.
+static string ReportFileName(ReportSettings settings)
+{
+    var model = settings.ChatModel is null ? null : string.Concat(settings.ChatModel.Select(c => char.IsLetterOrDigit(c) || c is '.' or '-' ? c : '-'));
+    var name = (settings.ChatModel, settings.IncludeTest) switch
+    {
+        (null, false) => "latest",
+        (null, true) => "final-retrieval",
+        (_, false) => $"full-{model}",
+        (_, true) => $"final-{model}",
+    };
+    return $"evals/results/{name}.md";
 }
