@@ -7,29 +7,34 @@ Asistente RAG que responde dudas de arrendamiento de vivienda urbana en Colombia
 
 > **Se ejecuta localmente bajo demanda con Ollama.** No hay despliegue en la nube ni claves de API.
 
-<!-- GIF de la demo (pendiente de grabar): tres preguntas, una clara, una con palabras cotidianas y una sin base que se rechaza.
-![Demo](docs/demo.gif)
--->
+## Demo
 
-```jsonc
-// POST /ask
-{ "question": "Se dañó el calentador por viejo, ¿lo paga el inquilino o el propietario?" }
+Respuestas reales de la API local, sin editar (`bge-m3` + `qwen2.5:7b`, en CPU).
 
-// 200 OK (resumido)
-{
-  "answer": "…",                       // redactado por el modelo, en español
-  "grounded": true,
-  "citations": [{
-    "id": "cc-2028",
-    "law": "Código Civil",
-    "article": "2028",
-    "text": "Las reparaciones llamadas locativas a que es obligado el inquilino…",  // sale del corpus, nunca del modelo
-    "sourceUrl": "http://www.secretariasenado.gov.co/…"
-  }],
-  "disclaimer": "Información general, no es asesoría legal.",
-  "corpusCutoff": "2026-11-19"
-}
-```
+**Palabras cotidianas: "calentador" no aparece en la ley, pero encuentra el artículo correcto.** El `answer` lo redacta el modelo; el `text` de la cita sale del corpus.
+
+![POST /ask: calentador viejo, responde citando el art. 2028 del Código Civil](docs/screenshots/1-calentador.png)
+
+**Sin base: no inventa.** Ningún artículo del corpus trata del IVA, así que responde que no encontró base y no cita nada.
+
+![POST /ask: IVA de un local comercial, responde grounded false sin citas](docs/screenshots/3-iva.png)
+
+<details>
+<summary>Más capturas: pregunta clara, depuración de la recuperación y documentación interactiva</summary>
+
+**Pregunta clara:**
+
+![POST /ask: gotera por lo viejo del techo, responde citando el art. 2028](docs/screenshots/2-gotera.png)
+
+**Por qué se rechazó la pregunta del IVA** (`GET /ask/debug`): pasa el umbral de similitud, pero el modelo marca `grounded: false`.
+
+![GET /ask/debug: artículos recuperados para la pregunta del IVA con su similitud](docs/screenshots/4-debug-iva.png)
+
+**Documentación interactiva con Scalar** en `http://localhost:5047/scalar` (solo en Development):
+
+![Página de Scalar con la documentación de la API](docs/screenshots/0-scalar.png)
+
+</details>
 
 ## La regla de oro
 
@@ -162,7 +167,7 @@ Fecha de corte: **19 de noviembre de 2026**. Fuentes, fechas de descarga y crite
 - [x] **Etapa 1, fase 1 – Recuperación:** corpus, ingesta con reutilización de embeddings, búsqueda en memoria, umbral.
 - [x] **Fase 2 – Respuestas:** salida estructurada, validación de citas, `POST /ask`, OpenAPI y Scalar.
 - [x] **Fase 3 – Evaluaciones:** 60 preguntas, calibración del umbral, comparación de modelos, medición final.
-- [ ] **Fase 4 – Portafolio:** CI y README listos; faltan el GIF de la demo y la release `v0.1.0`.
+- [ ] **Fase 4 – Portafolio:** CI y README con capturas de la demo listos; falta la release `v0.1.0`.
 - [ ] **Etapa 2, fase 5 – PostgreSQL + pgvector:** índice HNSW, ingesta idempotente y **búsqueda híbrida** (vectores + texto completo en español) como `PostgresArticleStore` de la misma interfaz. Se queda solo si mejora las evaluaciones frente a la `v0.1.0`.
 - [ ] **Mejoras medidas por las evaluaciones:** fidelidad con un LLM como juez; un filtro de alcance para preguntas parecidas a un tema del corpus pero fuera de él (crédito hipotecario, registro de empresas).
 - [ ] **Fase 6 – Integración:** un bot de WhatsApp de incidentes para inmobiliarias llama a `/ask` para sugerir quién paga cada daño.
