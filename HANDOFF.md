@@ -77,7 +77,7 @@ The article text shown to the user always comes from the corpus, never from the 
 - Activar *secret scanning* y *push protection* en GitHub.
 
 **Presentación**
-- `README.md` en inglés con:
+- `README.md` en español (decisión del autor; opcionalmente un `README.en.md`) con:
   1. Una línea del problema.
   2. GIF de 3 preguntas: una clara, una con palabras cotidianas ("calentador") y una sin base que el asistente rechaza.
   3. Nota: *"Runs locally on demand with Ollama."*
