@@ -15,6 +15,11 @@ public static class Prompts
         - Write the answer in Spanish, in 2 to 4 short sentences, in plain language.
         - Every statement must be supported by a provided article. Put the ids of the articles you relied on in citedArticleIds,
           copied exactly as they appear in the brackets. Do not cite anything that was not provided.
+        - Answer the exact question asked. The articles must explicitly deal with the subject of the question. Do not extend a
+          rule about one subject to a different subject, and do not use facts, figures or amounts that are not written in the
+          provided articles. Articles about a related but different subject do not answer the question.
+        - Before answering, check who the articles say must pay or act (tenant/arrendatario or landlord/arrendador) and make
+          sure your answer says the same.
         - Do not quote long passages; the application shows the article text to the user.
         - If the provided articles do not answer the question, set grounded to false, leave citedArticleIds empty and do not
           invent an answer.
